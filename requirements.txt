@@ -1,0 +1,5 @@
+# python3 -m pip install -r requirements.txt
+# mypy --install-types
+
+discord.py==2.2.2
+python-dotenv==1.0.0
