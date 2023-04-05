@@ -1,6 +1,6 @@
-# Cosmos Price Bot
+# DAODAO Treasury Bot
 
-A discord bot which changes the nickname to $ price and status to the MarketCap
+A discord bot which keeps up with the DAO treasury USD fiat value
 
 ## Setup
 
