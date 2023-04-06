@@ -75,20 +75,23 @@ async def on_ready():
     print(f"You have logged in as {client}")
     guild = client.get_guild(guildID)
     member = guild.get_member(memberID)
+
+    await member.edit(nick=f"{DAODAO_NAME}")
+
     while True:
         try:
             USD = getDAOWorth()
-            await member.edit(nick=f"{DAODAO_NAME}")
-            time.sleep(1)
-
+            
             await client.change_presence(
                 activity=discord.Activity(
                     type=discord.ActivityType.watching,
                     name=f"${USD:,.0f}",
                 )
             )
-            time.sleep(60)
+            print("Updated status, waiting 2 minutes")
+            time.sleep(120)
         except:
+            time.sleep(30)
             continue
 
 
