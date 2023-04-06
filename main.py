@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import time
+from asyncio import sleep as asleep
 
 import discord
 import requests
@@ -74,13 +74,18 @@ def getDAOWorth() -> float:
 async def on_ready():
     print(f"You have logged in as {client}")
     guild = client.get_guild(guildID)
-    member = guild.get_member(memberID)
+    member = guild.get_member(memberID)    
 
-    await member.edit(nick=f"{DAODAO_NAME}")
+    last_time = 0
+    USD = getDAOWorth()
+
+    await member.edit(nick=f"{DAODAO_NAME}")            
 
     while True:
-        try:
-            USD = getDAOWorth()
+        try:        
+            if last_time >= 60:
+                last_time = 0
+                USD = getDAOWorth()
             
             await client.change_presence(
                 activity=discord.Activity(
@@ -88,10 +93,10 @@ async def on_ready():
                     name=f"${USD:,.0f}",
                 )
             )
-            print("Updated status, waiting 2 minutes")
-            time.sleep(120)
-        except:
-            time.sleep(30)
+            print("Updated status, waiting 30 seconds")            
+            await asleep(30)
+            last_time += 30
+        except:            
             continue
 
 
