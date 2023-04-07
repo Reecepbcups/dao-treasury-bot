@@ -37,6 +37,13 @@ def getDAOAssets() -> dict:
     if a.status_code == 200:
         for i in a.json()["balances"]:
             assets[i["denom"]] = i["amount"]
+
+    # get CW20 assets from DAODAOs indexer
+    b = requests.get(f"https://indexer.daodao.zone/juno-1/contract/{DAO}/daoCore/cw20Balances?", timeout=20)
+    if b.status_code == 200:
+        for i in b.json():
+            assets[i["addr"]] = i["balance"]
+
     return assets
 
 
@@ -81,9 +88,12 @@ async def on_ready():
 
     await member.edit(nick=f"{DAODAO_NAME}")            
 
+    wait_seconds = 60
+    get_new_prices_seconds = 120
+
     while True:
         try:        
-            if last_time >= 60:
+            if last_time >= get_new_prices_seconds:
                 last_time = 0
                 USD = getDAOWorth()
             
@@ -93,9 +103,9 @@ async def on_ready():
                     name=f"${USD:,.0f}",
                 )
             )
-            print("Updated status, waiting 30 seconds")            
-            await asleep(30)
-            last_time += 30
+            print(f"Updated status, waiting {wait_seconds} seconds")            
+            await asleep(wait_seconds)
+            last_time += wait_seconds
         except:            
             continue
 
