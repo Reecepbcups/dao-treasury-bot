@@ -2,6 +2,8 @@
 
 A discord bot which keeps up with the DAO treasury USD fiat value
 
+![image](https://user-images.githubusercontent.com/31943163/230540353-412bc209-ff22-4b78-babd-cd7d814e240f.png)
+
 ## Setup
 
 ```bash
